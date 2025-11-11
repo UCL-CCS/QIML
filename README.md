@@ -67,7 +67,7 @@ The general workflow consists of training the Q-Prior to generate a prior, then 
 2.  **Train the Quantum Prior (Q-Prior):**
     (Example for the Kuramoto-Sivashinsky system)
     ```bash
-    python Q-Prior_ks.py --system KS --data_path data/ks_data.npy --output_path priors/ks_qprior.pkl
+    python Q-Prior_ks_final.py --system KS --data_path data/ks_data.npy --output_path priors/ks_qprior.pkl
     ```
 
 3.  **Train the QIML Model:**
@@ -79,7 +79,7 @@ The general workflow consists of training the Q-Prior to generate a prior, then 
 4.  **Evaluate the Model and Generate Figures:**
     (Example for generating figures for the KS system)
     ```bash
-    python visualize_ks.py --system KS --model_path models/ks_qiml.pt
+    python visualization_ks.py --system KS --model_path models/ks_qiml.pt
     ```
 
 ## License
