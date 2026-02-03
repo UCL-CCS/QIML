@@ -9,7 +9,7 @@ import sys
 sys.path.append('../')
 from utilities import *
 sys.path.append('../lib')
-from pfnn_consist_2d import *
+from Koopman_2d import *
 
 from timeit import default_timer
 import scipy.io
