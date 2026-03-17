@@ -39,7 +39,7 @@ We recommend using a `conda` environment to manage dependencies.
 
 2.  **Create and activate the conda environment:**
     ```bash
-    conda create -n qiml python=3.9
+    conda create -n qiml python=3.10
     conda activate qiml
     ```
 
