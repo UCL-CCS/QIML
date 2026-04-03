@@ -1,22 +1,22 @@
 # Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos
 
-[![Paper](https://img.shields.io/badge/paper-arXiv-red)](https://arxiv.org/abs/[Your_arXiv_ID_Here])
+[![Paper](https://img.shields.io/badge/paper-arXiv-red)](https://arxiv.org/abs/2507.19861)
 [![Data](https://img.shields.io/badge/data-Zenodo-blue)](https://zenodo.org/records/16419086)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains the official source code and implementation for the paper **"Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos"**.
+Official implementation of the paper **"Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos"**.
 
-
+---
 
 ## Key Contributions
 
-* **Novel Hybrid Architecture:** We introduce and experimentally validate a new QIML framework that significantly improves the long-term stability and statistical fidelity of chaotic system predictions.
-* **Exceptional Efficiency:** Our approach demonstrates remarkable parameter and memory efficiency, reducing data storage requirements by over two orders of magnitude compared to raw simulation data by leveraging the expressive power of quantum circuits.
-* **Practical NISQ Application:** We provide a scalable and hardware-compatible blueprint for meaningfully integrating near-term (NISQ-era) quantum devices into classical scientific computing workflows to solve practical, complex problems.
+- **Novel Hybrid Architecture** — A new QIML framework that significantly improves long-term stability and statistical fidelity of chaotic system predictions.
+- **Exceptional Efficiency** — Reduces data storage requirements by over two orders of magnitude compared to raw simulation data by leveraging the expressive power of quantum circuits.
+- **Practical NISQ Application** — A scalable, hardware-compatible blueprint for integrating near-term (NISQ-era) quantum devices into classical scientific computing workflows.
+
+---
 
 ## Citation
-
-If you use this work in your research, please cite our paper:
 
 ```bibtex
 @article{wang2025quantum,
@@ -27,72 +27,165 @@ If you use this work in your research, please cite our paper:
 }
 ```
 
+---
+
+## Repository Layout
+
+| Path | Role |
+|------|------|
+| `script/` | Q-Prior training (`QPRIOR_*.py`) and QIML training (`train_q_*.py`) |
+| `lib/` | Modules imported by training scripts (e.g. `vae_base.py`, `Koopman_2d.py`) |
+| `data/` | Zenodo datasets (filenames must match those hard-coded in each script) |
+| `postprocessing/` | Aggregation / analysis scripts |
+| `visualise/` | Notebooks for figures (`visualization_*.ipynb`) |
+| `models/`, `model/`, `mainmodel/` | Checkpoints (created by scripts when missing) |
+
+> **Working directory note:** Training scripts use relative paths (`../data/`, `../lib`, `../models`). Always `cd script/` before running any training script — do **not** run them from the repository root.
+
+---
+
 ## Installation
 
-We recommend using a `conda` environment to manage dependencies.
+```bash
+# Clone
+git clone https://github.com/UCL-CCS/QIML.git
+cd QIML
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/UCL-CCS/QIML.git](https://github.com/UCL-CCS/QIML.git)
-    cd QIML
-    ```
+# Option A — conda
+conda env create -f environment.yml
+conda activate mlenv
 
-2.  **Create and activate the conda environment:**
-    ```bash
-    conda create -n qiml python=3.10
-    conda activate qiml
-    ```
+# Option B — pip
+pip install -r requirements.txt
+```
 
-3.  **Install the required packages:**
+---
 
-    **Recommended (Conda):**
-    ```bash
-    conda env create -f environment.yml
-    conda activate mlenv
-    ```
+## Data
 
-    **Alternative (Pip):**
-    ```bash
-    pip install -r requirements.txt
-    ```
+Download files from [Zenodo](https://zenodo.org/records/16419086) and place them under `data/` using the exact filenames expected by each script (paths are case-sensitive on Linux):
 
-    > **Note:** We recommend using the conda environment as it includes all system dependencies and ensures compatibility. The pip installation is provided as an alternative option.
+| File | Used by |
+|------|---------|
+| `data/KS_data.npy` | `QPRIOR_ks_final.py`, `train_q_KS.py`, `postprocessing/modelload_down_ks.py` |
+| `data/kf_2d_re1000_256_120seed.npy` | `QPRIOR_kf_final.py`, `train_q_kf.py` |
+| `data/reduced_data.npy` | `QPRIOR_tcf_final.py` |
+| `data/train_set_vxyz_s2_1_64.npy` | `train_q_TCF.py` |
+
+---
+
 ## Usage
 
-The general workflow consists of training the Q-Prior to generate a prior, then training the main QIML model using this prior.
+### 1. Train the Q-Prior
 
-1.  **Download the Data:**
-    All datasets are available on Zenodo. Please download the data and place it in the `data/` directory.
+```bash
+cd script
+```
 
-2.  **Train the Quantum Prior (Q-Prior):**
-    (Example for the Kuramoto-Sivashinsky system)
-    ```bash
-    python QPrior_ks_final.py --system KS --data_path data/ks_data.npy --output_path priors/ks_qprior.pkl
-    ```
+**Kuramoto–Sivashinsky**
 
-3.  **Train the QIML Model:**
-    (Example for the Kuramoto-Sivashinsky system using the generated prior)
-    ```bash
-    python train_q_ks.py --system KS --data_path data/ks_data.npy --prior_path priors/ks_qprior.pkl --output_path models/ks_qiml.pt
-    ```
+Input: `../data/KS_data.npy` | Arguments: `--n_qubits`, `--epochs`, `--num_trajectories`
 
-4.  **Evaluate the Model and Generate Figures:**
-    (Example for generating figures for the KS system)
-    ```bash
-    python visualization_ks.py --system KS --model_path models/ks_qiml.pt
-    ```
+```bash
+python QPRIOR_ks_final.py --n_qubits 10 --epochs 500 --num_trajectories 500
+python QPRIOR_ks_final.py --help
+```
+
+**Kolmogorov flow**
+
+Input: `../data/kf_2d_re1000_256_120seed.npy` | Arguments: `--n_qubits`, `--epochs`
+
+```bash
+python QPRIOR_kf_final.py --n_qubits 15 --epochs 300
+python QPRIOR_kf_final.py --help
+```
+
+**Taylor–Green / TCF**
+
+Input: `../data/reduced_data.npy` | Arguments: `--n_qubits`, `--epochs`
+
+```bash
+python QPRIOR_tcf_final.py --n_qubits 10 --epochs 500
+python QPRIOR_tcf_final.py --help
+```
+
+---
+
+### 2. Post-processing (KS example)
+
+```bash
+cd postprocessing
+python modelload_down_ks.py --n_qubits 10 --num_trajectories 500
+python modelload_down_ks.py --help
+```
+
+> **Path alignment required:** `QPRIOR_ks_final.py` writes checkpoints to `../models/model_ks_trajectories_128dim/`, while `modelload_down_ks.py` reads from `../models/model_ks_trajectories/`. Copy, symlink, or edit the scripts to align these paths before running the end-to-end KS pipeline.
+
+---
+
+### 3. Train the QIML Model
+
+> **Note:** These scripts do not support `--system`, `--data_path`, or `--prior_path` arguments. Edit the hard-coded `np.load(...)` lines in each file to point to your Q-Prior array and data before running.
+
+```bash
+cd script
+```
+
+**KS** — `train_q_KS.py`
+
+- Data: `../data/KS_data.npy`
+- Q-Prior placeholder: `.../postprocessing/Q-Prior_ks_pdf_10.npy` ← replace with real path
+
+```bash
+python train_q_KS.py
+```
+
+**Kolmogorov flow** — `train_q_kf.py`
+
+- Q-Prior: `../postprocessing/Q-Prior_kf_pdf_15_2.npy`
+- Data: `../data/kf_2d_re1000_256_120seed.npy`
+
+```bash
+python train_q_kf.py
+```
+
+**TCF** — `train_q_TCF.py`
+
+- Q-Prior: `../postprocessing/Q-Prior_iqm_0-9_32768.npy`
+- Data: `../data/train_set_vxyz_s2_1_64.npy`
+
+```bash
+python train_q_TCF.py
+```
+
+**Classical baseline** — see `train_q_classical.py` for paths and settings.
+
+---
+
+### 4. Visualisation
+
+Notebooks live under `visualise/`:
+
+```
+visualise/visualization_KS.ipynb
+visualise/visualization_KF.ipynb
+visualise/visualization_TCF.ipynb
+```
+
+---
 
 ## License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
 
 ## Contact
 
-For any questions, please feel free to contact:
+**Maida Wang** — maida.wang.24@ucl.ac.uk
 
-* **Maida Wang:** `maida.wang.24@ucl.ac.uk`
-
+---
 
 ## Acknowledgements
-We would like to thank Professor Igor Mezic for his valuable comments on an earlier version of this paper and Dr. Marcello Benedetti for his valuable feedback. We are also grateful to Thomas M. Bickley and Angus Mingare for their careful reading of the manuscript and insightful comments. We also gratefully acknowledge IQM Quantum Computers for providing access to superconducting quantum processors used in hardware benchmarking, and the Leibniz Supercomputing Centre (LRZ) for access to the BEAST NVDIA GPU cluster, which supported the training of classical models and quantum circuit simulations.
 
+We thank Professor Igor Mezic for valuable comments on an earlier version of this paper, and Dr. Marcello Benedetti for helpful feedback. We are grateful to Thomas M. Bickley and Angus Mingare for their careful reading and insightful comments. We also gratefully acknowledge IQM Quantum Computers for access to superconducting quantum processors used in hardware benchmarking, and the Leibniz Supercomputing Centre (LRZ) for access to the BEAST NVIDIA GPU cluster, which supported training of classical models and quantum circuit simulations.
