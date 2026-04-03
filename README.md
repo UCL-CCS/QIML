@@ -4,7 +4,7 @@
 [![Data](https://img.shields.io/badge/data-Zenodo-blue)](https://zenodo.org/records/16419086)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Official implementation of the paper **"Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos"**.
+Official implementation of the paper **"Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage"**.
 
 ---
 
@@ -20,7 +20,7 @@ Official implementation of the paper **"Quantum-Informed Machine Learning for Pr
 
 ```bibtex
 @article{wang2025quantum,
-  title={Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos},
+  title={Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage},
   author={Wang, Maida and Xue, Xiao and Gao, Mingyang and Coveney, Peter V},
   journal={arXiv preprint arXiv:2507.19861},
   year={2025}
