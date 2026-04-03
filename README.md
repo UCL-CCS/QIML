@@ -1,4 +1,4 @@
-# Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos
+# Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage
 
 [![Paper](https://img.shields.io/badge/paper-arXiv-red)](https://arxiv.org/abs/2507.19861)
 [![Data](https://img.shields.io/badge/data-Zenodo-blue)](https://zenodo.org/records/16419086)
