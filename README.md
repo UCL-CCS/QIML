@@ -4,7 +4,7 @@
 [![Data](https://img.shields.io/badge/data-Zenodo-blue)](https://zenodo.org/records/16419086)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Official implementation of the paper **"Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage"**.
+Official implementation of the paper **"Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage"** at SCIENCE ADVANCES.
 
 ---
 
@@ -19,11 +19,17 @@ Official implementation of the paper **"Quantum-Informed Machine Learning for Pr
 ## Citation
 
 ```bibtex
-@article{wang2025quantum,
-  title={Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage},
-  author={Wang, Maida and Xue, Xiao and Gao, Mingyang and Coveney, Peter V},
-  journal={arXiv preprint arXiv:2507.19861},
-  year={2025}
+@article{
+doi:10.1126/sciadv.aec5049,
+author = {Maida Wang  and Xiao Xue  and Mingyang Gao  and Peter V. Coveney },
+title = {Quantum-informed machine learning for predicting spatiotemporal chaos with practical quantum advantage},
+journal = {Science Advances},
+volume = {12},
+number = {16},
+pages = {eaec5049},
+year = {2026},
+doi = {10.1126/sciadv.aec5049},
+URL = {https://www.science.org/doi/abs/10.1126/sciadv.aec5049}
 }
 ```
 
@@ -183,6 +189,7 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 ## Contact
 
 **Maida Wang** — maida.wang.24@ucl.ac.uk
+**Xiao Xue** — x.xue@ucl.ac.uk
 
 ---
 
